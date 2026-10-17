@@ -88,7 +88,7 @@ processBtn.addEventListener('click', async () => {
     formData.append('file', selectedFile);
     
     try {
-        const response = await fetch('/api/process', { method: 'POST', body: formData });
+        const response = await fetch('https://pdf-fieldfomrms.onrender.com/api/process', { method: 'POST', body: formData });
         if (!response.ok) throw new Error('Error del servidor');
         
         const data = await response.json();
@@ -96,7 +96,7 @@ processBtn.addEventListener('click', async () => {
         currentFields = data.fields.map(f => ({...f, type: f.type || 'text', font_size: 10, align: 'left'}));
         originalFields = JSON.parse(JSON.stringify(currentFields));
         
-        pdfDoc = await pdfjsLib.getDocument(data.pdf_url).promise;
+        pdfDoc = await pdfjsLib.getDocument('https://pdf-fieldfomrms.onrender.com' + data.pdf_url).promise;
         
         uploadView.style.display = 'none';
         editorView.style.display = 'flex';
@@ -315,7 +315,7 @@ saveBtn.addEventListener('click', async () => {
     }));
     
     try {
-        const response = await fetch('/api/session/' + currentSession + '/update', {
+        const response = await fetch('https://pdf-fieldfomrms.onrender.com/api/session/' + currentSession + '/update', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ updates })
@@ -326,7 +326,7 @@ saveBtn.addEventListener('click', async () => {
         saveBtn.textContent = '✅ Guardado';
         setTimeout(() => { saveBtn.textContent = '💾 Guardar cambios'; saveBtn.disabled = false; }, 2000);
         
-        downloadBtn.href = '/api/session/' + currentSession + '/download';
+        downloadBtn.href = 'https://pdf-fieldfomrms.onrender.com/api/session/' + currentSession + '/download';
         downloadBtn.style.display = 'inline-block';
     } catch (error) {
         saveBtn.textContent = '❌ Error';
@@ -355,3 +355,4 @@ window.addEventListener('resize', () => {
         }
     }, 300);
 });
+
