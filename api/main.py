@@ -1,6 +1,5 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import FileResponse
-from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import List
 import subprocess
@@ -10,6 +9,7 @@ import uuid
 import pymupdf
 
 app = FastAPI()
+
 SESSIONS = {}
 TEMP_DIR = tempfile.mkdtemp(prefix="formulario_")
 
@@ -88,7 +88,6 @@ async def update_fields(session_id: str, data: SessionUpdate):
                 if u.align in align_map:
                     widget.text_align = align_map[u.align]
                 
-                # Configurar celdas (comb field)
                 if u.max_len > 0:
                     widget.text_maxlen = u.max_len
                     widget.field_flags |= pymupdf.PDF_TX_FIELD_IS_COMB
@@ -117,4 +116,4 @@ async def download_pdf(session_id: str):
         filename="formulario_ajustado.pdf"
     )
 
-app.mount("/", StaticFiles(directory="web", html=True), name="web")
+# NO ponemos app.mount aqui porque el frontend esta en Vercel
