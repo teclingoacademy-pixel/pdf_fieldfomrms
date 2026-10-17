@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editor de Formularios</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+</head>
+<body>
+    <header class="app-header">
+        <h1>Editor de Formularios</h1>
+        <p class="subtitle">Sube tu PDF, ajusta los campos con precision y descarga</p>
+    </header>
+    
+    <main class="app-main">
+        <div id="uploadView" class="view">
+            <label class="upload-area" id="uploadArea" for="fileInput">
+                <div class="upload-icon">📄</div>
+                <p>Arrastra tu PDF aqui o haz clic para seleccionar</p>
+                <input type="file" id="fileInput" accept=".pdf" style="display:none">
+            </label>
+            <button class="btn-primary" id="processBtn" disabled>Procesar PDF</button>
+            <div class="status" id="status"></div>
+        </div>
+        
+        <div id="editorView" class="view" style="display:none;">
+            <div class="toolbar">
+                <button class="btn-tool active" id="toggleFields">👁 Campos</button>
+                <span class="field-counter" id="fieldCounter">0 campos</span>
+                <button class="btn-tool" id="resetBtn">↺ Reiniciar</button>
+                <button class="btn-primary btn-small" id="saveBtn">💾 Guardar cambios</button>
+                <a class="btn-secondary btn-small" id="downloadBtn" style="display:none;">⬇ Descargar PDF</a>
+            </div>
+            
+            <div class="editor-layout">
+                <div class="pdf-container" id="pdfContainer">
+                    <div id="pdfPages"></div>
+                </div>
+                
+                <!-- Panel lateral de propiedades -->
+                <aside class="properties-panel" id="propertiesPanel">
+                    <div class="panel-header">
+                        <h3>Propiedades del campo</h3>
+                        <button class="close-panel" id="closePanel" title="Deseleccionar">×</button>
+                    </div>
+                    
+                    <div id="noSelection" class="no-selection">
+                        <p>👆 Haz clic en un campo del PDF para editarlo</p>
+                    </div>
+                    
+                    <div id="fieldProperties" style="display:none;">
+                        <div class="prop-group">
+                            <label>Nombre del campo</label>
+                            <input type="text" id="propName" readonly>
+                        </div>
+                        
+                        <div class="prop-group">
+                            <label>Tipo</label>
+                            <select id="propType">
+                                <option value="text">Texto libre</option>
+                                <option value="number">Solo números</option>
+                                <option value="letters">Solo letras</option>
+                                <option value="alphanumeric">Alfanumérico</option>
+                            </select>
+                        </div>
+                        
+                        <div class="prop-group">
+                            <label>Número de celdas</label>
+                            <input type="number" id="propCells" min="0" max="30" value="0">
+                            <small>0 = campo normal, 1-30 = celdas separadas</small>
+                        </div>
+                        
+                        <div class="prop-group">
+                            <label>Tamaño de fuente</label>
+                            <input type="number" id="propFontSize" min="6" max="24" value="10">
+                        </div>
+                        
+                        <div class="prop-group">
+                            <label>Alineación</label>
+                            <select id="propAlign">
+                                <option value="left">Izquierda</option>
+                                <option value="center">Centro</option>
+                                <option value="right">Derecha</option>
+                            </select>
+                        </div>
+                        
+                        <div class="prop-actions">
+                            <button class="btn-danger" id="deleteField">🗑 Eliminar campo</button>
+                        </div>
+                        
+                        <div class="prop-info">
+                            <strong>Posición:</strong> <span id="propPosition">-</span><br>
+                            <strong>Tamaño:</strong> <span id="propSize">-</span>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </main>
+    
+    <script src="script.js"></script>
+</body>
+</html>
