@@ -1,10 +1,9 @@
 {
-  "builds": [
-    { "src": "index.html", "use": "@vercel/static" },
-    { "src": "style.css", "use": "@vercel/static" },
-    { "src": "script.js", "use": "@vercel/static" }
-  ],
+  "version": 2,
+  "public": true,
+  "buildCommand": "echo 'Static site ready'",
+  "outputDirectory": ".",
   "routes": [
-    { "src": "/(.*)", "dest": "/" }
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
